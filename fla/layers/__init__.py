@@ -44,6 +44,7 @@ from .rebased import ReBasedLinearAttention
 from .rodimus import RodimusAttention, SlidingWindowSharedKeyAttention
 from .rwkv6 import RWKV6Attention
 from .rwkv7 import RWKV7Attention
+from .sdm import SparseDeltaMemory
 from .stickbreaking_attn import StickBreakingAttention
 from .wall_attn import WallAttention
 from .yoco import YOCOCrossAttention, YOCOGatedRetention, YOCOSharedKVBuilder
@@ -89,6 +90,7 @@ __all__ = [
     'ReBasedLinearAttention',
     'RodimusAttention',
     'SlidingWindowSharedKeyAttention',
+    'SparseDeltaMemory',
     'StickBreakingAttention',
     'WallAttention',
     'YOCOCrossAttention',

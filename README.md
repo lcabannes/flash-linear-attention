@@ -29,6 +29,7 @@
 
 ## News
 
+- [2026-10] 🧠 Add [Sparse Delta Memory](https://arxiv.org/abs/2607.07386) (SDM) to `fla`: the gated delta rule over a large bank of slots, written and read through sparse product keys.
 - [2026-10] 🌊 Add [CyFA](https://arxiv.org/abs/2609.36259) (Cyclic Flow Attention) implementation to `fla` - a Linear RNN that partitions memory by relative time through learned cyclic transport.
 - [2026-10] 🎉 Add Stick-Breaking Attention kernels and models to `fla` ([paper](https://arxiv.org/abs/2410.17980)).
 - [2026-07] 🐈 Add CAT (Compress and Attend Transformer) implementation to `fla` ([paper](https://arxiv.org/abs/2511.05313)) - a _meta_-sequence mixer that unlocks test-time control of inference costs.
@@ -123,6 +124,7 @@
 | 2026 | Preconditioned KDA            | [Preconditioned DeltaNet: Curvature-aware Sequence Modeling for Linear Recurrences](https://arxiv.org/abs/2604.21100)                         | [code](https://github.com/fla-org/flash-linear-attention/tree/main/fla/ops/precond_kda)                |
 | 2026 | CAT                           | [Controllably Efficient Language Models](https://arxiv.org/abs/2511.05313)                                                                    | [code](https://github.com/fla-org/flash-linear-attention/tree/main/fla/models/cat)                     |
 | 2026 | CyFA                          | [CyFA: Linear Sequence Modeling with Relative-Time-Partitioned Memory](https://arxiv.org/abs/2609.36259)                                      | [code](https://github.com/fla-org/flash-linear-attention/tree/main/fla/models/cyfa)                    |
+| 2026 | SDM                           | [Sparse Delta Memory](https://arxiv.org/abs/2607.07386)                                                                                         | [code](https://github.com/fla-org/flash-linear-attention/tree/main/fla/layers/sdm.py)                  |
 
 ## Installation
 
