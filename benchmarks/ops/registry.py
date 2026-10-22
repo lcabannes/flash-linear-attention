@@ -599,6 +599,47 @@ register_op(OpConfig(
 ))
 
 
+def shape_sdm_slots(B, T, H, D, K=64, **kw):
+    return (B, T, H, K)
+
+
+def shape_sdm_bank(B, T, H, D, S=65536, **kw):
+    return (B, H, S, D)
+
+
+def init_sdm_inputs(inputs, S=65536, **kw):
+    with torch.no_grad():
+        for name in ('q', 'k'):
+            idx, val = inputs[f'{name}_idx'], inputs[f'{name}_val']
+            # distinct slots per token: a random offset plus K evenly spaced slots
+            offset = torch.randint(0, S, (*idx.shape[:-1], 1), device=idx.device)
+            idx.copy_(((offset + torch.arange(idx.shape[-1], device=idx.device) * (S // idx.shape[-1])) % S).sort(-1).values)
+            val.copy_(val.softmax(-1))
+
+
+register_op(OpConfig(
+    name='chunk_sparse_delta_rule',
+    import_path='fla.ops.sparse_delta_rule',
+    inputs={
+        'q_idx': TensorSpec(shape_sdm_slots, dtype='long'),
+        'q_val': TensorSpec(shape_sdm_slots),
+        'k_idx': TensorSpec(shape_sdm_slots, dtype='long'),
+        'k_val': TensorSpec(shape_sdm_slots),
+        'v': TensorSpec(shape_BTHD),
+        'g': TensorSpec(shape_BTH, dtype='float32', transform=logsigmoid),
+        'beta': TensorSpec(shape_BTH, transform=sigmoid_transform),
+        'initial_state': TensorSpec(shape_sdm_bank),
+    },
+    post_init=init_sdm_inputs,
+    category='gate_beta',
+    default_shapes={
+        'B1_T8192_H16_D128_S65536_K64': {'B': 1, 'T': 8192, 'H': 16, 'D': 128, 'S': 65536, 'K': 64},
+        'B4_T8192_H16_D128_S65536_K64': {'B': 4, 'T': 8192, 'H': 16, 'D': 128, 'S': 65536, 'K': 64},
+    },
+    backend_env={'gluon': 'FLA_SDM_GLUON'},
+))
+
+
 register_op(OpConfig(
     name='flash_attn',
     import_path='flash_attn',
